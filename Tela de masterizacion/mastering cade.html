@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Compartir Cadenas de Mastering</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        header {
+            background-image: url('https://www.olbaidmusic.com/wp-content/uploads/2023/11/FL-Studio-21.1.jpg');
+            background-color: #2c2f3f;
+            color: #fff;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            font-weight: 600;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 40px auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .upload-section h2, .file-list h2 {
+            font-size: 1.8rem;
+            color: #2c2f3f;
+            margin-bottom: 20px;
+        }
+
+        .upload-section input[type="file"],
+        .upload-section input[type="text"],
+        .upload-section textarea,
+        .upload-section input[type="submit"] {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 6px;
+            border: 2px solid #ddd;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .upload-section input[type="file"]:hover,
+        .upload-section input[type="text"]:hover,
+        .upload-section textarea:hover {
+            border-color: #e65c00;
+        }
+
+        .upload-section input[type="submit"] {
+            background-color: #1a1a1a;
+            color: #fff;
+            cursor: pointer;
+            border: none;
+            transition: background-color 0.3s;
+        }
+
+        .upload-section input[type="submit"]:hover {
+            background-color: #e65c00;
+        }
+
+        .file-list {
+            margin-top: 30px;
+        }
+
+        .file-list ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .file-list li {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, background-color 0.3s;
+        }
+
+        .file-list li:hover {
+            transform: translateY(-5px);
+            background-color: #f7f7f7;
+        }
+
+        .file-list a {
+            color: #2c2f3f;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.2rem;
+            transition: color 0.3s;
+        }
+
+        .file-list a:hover {
+            color: #e65c00;
+        }
+
+        .file-list span, .file-list p {
+            font-size: 1rem;
+            color: #666;
+        }
+
+        footer {
+            background-color: #2c2f3f;
+            color: #fff;
+            padding: 15px;
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        footer p {
+            font-size: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+                margin: 20px;
+            }
+
+            header h1 {
+                font-size: 2rem;
+            }
+
+            .upload-section input[type="text"],
+            .upload-section input[type="file"],
+            .upload-section textarea,
+            .upload-section input[type="submit"] {
+                font-size: 14px;
+            }
+
+            .file-list li {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>Compartir Cadenas de Mastering</h1>
+    </header>
+
+    <div class="container">
+        <div class="upload-section">
+            <h2>Sube tu Cadena de Mastering</h2>
+            <form id="uploadForm" action="/upload" method="post" enctype="multipart/form-data">
+                <input type="file" name="file" accept=".zip, .rar, .flp" required>
+                <input type="text" name="user-name" placeholder="Nombre de Usuario" required>
+                <input type="text" name="instagram-link" placeholder="Enlace de Instagram" required>
+                <input type="text" name="music-genre" placeholder="Género de Música" required>
+                <textarea name="description" placeholder="Descripción de la Cadena" rows="4" required></textarea>
+                <input type="submit" value="Subir Cadena">
+            </form>
+        </div>
+
+        <div class="file-list">
+            <h2>Archivos Compartidos</h2>
+            <ul id="fileList">
+                <!-- Archivos se agregarán dinámicamente aquí -->
+            </ul>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Compartir Cadenas de Mastering - Todos los derechos reservados</p>
+    </footer>
+
+    <script>
+        document.getElementById('uploadForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevenir el envío por defecto del formulario
+
+            const formData = new FormData(this);
+            const fileName = formData.get('file').name;
+            const genre = formData.get('music-genre');
+            const description = formData.get('description');
+            const userName = formData.get('user-name');
+            const instagramLink = formData.get('instagram-link');
+
+            // Crear un enlace de descarga (simulado)
+            const downloadLink = URL.createObjectURL(new Blob([fileName]));
+
+            // Agregar el archivo a la lista de archivos compartidos
+            const fileList = document.getElementById('fileList');
+            const listItem = document.createElement('li');
+            listItem.innerHTML = `
+                <a href="${downloadLink}" download>${fileName}</a>
+                <span><strong>Género:</strong> ${genre}</span>
+                <p>${description}</p>
+                <p><strong>Subido por:</strong> ${userName} - <a href="${instagramLink}" target="_blank">Instagram</a></p>
+            `;
+            fileList.appendChild(listItem);
+
+            // Resetear el formulario
+            this.reset();
+        });
+    </script>
+
+</body>
+
+</html>
